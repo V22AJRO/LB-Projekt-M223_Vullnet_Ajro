@@ -8,17 +8,8 @@ export default function RegionsPanel({
     <div className="box">
       <h2>Regions</h2>
 
-      <button className="btn" onClick={() => onChangeRegion("europe")}>
+      <button className="btn" onClick={() => onChangeRegion("Europe")}>
         Europe
-      </button>
-      <button className="btn" onClick={() => onChangeRegion("asia")}>
-        Asia
-      </button>
-      <button className="btn" onClick={() => onChangeRegion("africa")}>
-        Africa
-      </button>
-      <button className="btn" onClick={() => onChangeRegion("americas")}>
-        Americas
       </button>
 
       <hr />
@@ -28,9 +19,9 @@ export default function RegionsPanel({
       <div className="liste">
         {countries.map((c) => (
           <button
-            key={c.code}
+            key={c.id}
             className="item"
-            onClick={() => onPickCountry(c.code)}
+            onClick={() => onPickCountry(c.id)}
           >
             {c.name}
           </button>

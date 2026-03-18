@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getCountriesByRegion,
   searchCountriesByName,
-  getCountryDetailsByAlpha,
+  getCountryDetailsById,
 } from "./restcountries";
 
 import RegionsPanel from "./components/RegionsPanel";
@@ -13,7 +13,7 @@ export default function App() {
   // ----------------------------
   // STATE (was die App "merkt")
   // ----------------------------
-  const [activeRegion, setActiveRegion] = useState("europe");
+  const [activeRegion, setActiveRegion] = useState("Europe");
   const [countries, setCountries] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
@@ -28,7 +28,7 @@ export default function App() {
       if (!data) data = [];
 
       const list = data.map((x) => {
-        return { name: x.name.common, code: x.cca3 };
+        return { id: x.id, name: x.name, code: x.code };
       });
 
       setCountries(list);
@@ -56,7 +56,7 @@ export default function App() {
       if (!data) data = [];
 
       const list = data.map((x) => {
-        return { name: x.name.common, code: x.cca3 };
+        return { id: x.id, name: x.name, code: x.code };
       });
 
       setResults(list);
@@ -66,10 +66,9 @@ export default function App() {
   // ----------------------------
   // LAND AUSWÄHLEN (Details laden)
   // ----------------------------
-  function pickCountry(code) {
-    getCountryDetailsByAlpha(code).then((data) => {
-      if (Array.isArray(data)) setDetails(data[0]);
-      else setDetails(data);
+  function pickCountry(id) {
+    getCountryDetailsById(id).then((data) => {
+      setDetails(data);
     });
   }
 

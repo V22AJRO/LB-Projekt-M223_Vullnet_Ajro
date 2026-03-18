@@ -1,39 +1,26 @@
 export default function DetailsPanel({ details }) {
   let name = "";
-  let flagUrl = "";
   let capital = "-";
-  let region = "-";
-  let subregion = "-";
+  let president = "-";
   let population = "-";
+  let region = "-";
   let languages = "-";
-  let currencies = "-";
 
   if (details) {
-    name = details.name.common;
-
-    if (details.flags && details.flags.png) {
-      flagUrl = details.flags.png;
-    }
-
-    if (details.capital && details.capital.length > 0) {
-      capital = details.capital[0];
-    }
-
-    region = details.region || "-";
-    subregion = details.subregion || "-";
+    name = details.name || "-";
+    capital = details.capital || "-";
+    president = details.president || "-";
 
     if (details.population) {
       population = details.population.toLocaleString("de-CH");
     }
 
-    if (details.languages) {
-      languages = Object.values(details.languages).join(", ");
+    if (details.region && details.region.name) {
+      region = details.region.name;
     }
 
-    if (details.currencies) {
-      currencies = Object.values(details.currencies)
-        .map((c) => c.name)
-        .join(", ");
+    if (details.languages && details.languages.length > 0) {
+      languages = details.languages.map((language) => language.name).join(", ");
     }
   }
 
@@ -45,19 +32,11 @@ export default function DetailsPanel({ details }) {
         <div className="hinweis">Please select a country on the left.</div>
       ) : (
         <div className="details">
-          <div className="detailsTop">
-            {flagUrl !== "" ? (
-              <img className="flagge" src={flagUrl} alt="Flag" />
-            ) : null}
+          <div className="detailsTitel">{name}</div>
 
-            <div>
-              <div className="detailsTitel">{name}</div>
-              <div className="detailsKlein">
-                {region} / {subregion}
-              </div>
-            </div>
+          <div className="detailsZeile">
+            <b>Region:</b> {region}
           </div>
-
           <div className="detailsZeile">
             <b>Capital:</b> {capital}
           </div>
@@ -65,10 +44,10 @@ export default function DetailsPanel({ details }) {
             <b>Population:</b> {population}
           </div>
           <div className="detailsZeile">
-            <b>Languages:</b> {languages}
+            <b>President:</b> {president}
           </div>
           <div className="detailsZeile">
-            <b>Currencies:</b> {currencies}
+            <b>Languages:</b> {languages}
           </div>
         </div>
       )}

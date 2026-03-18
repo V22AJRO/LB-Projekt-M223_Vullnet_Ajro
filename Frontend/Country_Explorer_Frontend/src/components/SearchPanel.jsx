@@ -15,7 +15,7 @@ export default function SearchPanel({
           className="input"
           value={searchText}
           onChange={(e) => onChangeSearchText(e.target.value)}
-          placeholder="Country (example: Switzerland, Germany, Russia)"
+          placeholder="Country (example: Switzerland, Germany)"
         />
         <button className="btn" onClick={onSearch}>
           Search
@@ -28,9 +28,9 @@ export default function SearchPanel({
         <div className="liste">
           {results.map((c) => (
             <button
-              key={c.code}
+              key={c.id}
               className="item"
-              onClick={() => onPickCountry(c.code)}
+              onClick={() => onPickCountry(c.id)}
             >
               {c.name}
             </button>

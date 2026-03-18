@@ -1,30 +1,33 @@
-const BASE_URL = "https://restcountries.com/v3.1";
+const BASE_URL = "http://localhost:8080";
 
-function loadJson(url) {
+function loadJson(url, fallback = []) {
   return fetch(url)
-    .then((r) => r.json())
-    .catch(() => []);
+    .then((r) => {
+      if (!r.ok) {
+        throw new Error("Request failed");
+      }
+
+      return r.json();
+    })
+    .catch(() => fallback);
 }
 
 export function getCountriesByRegion(region) {
-  const url = BASE_URL + "/region/" + region + "?fields=name,cca3,region";
-  return loadJson(url);
+  const url =
+    BASE_URL + "/countries?region=" + encodeURIComponent(region);
+
+  return loadJson(url, []);
 }
 
 export function searchCountriesByName(name) {
   const url =
-    BASE_URL +
-    "/name/" +
-    encodeURIComponent(name) +
-    "?fields=name,cca3,region";
-  return loadJson(url);
+    BASE_URL + "/countries?name=" + encodeURIComponent(name);
+
+  return loadJson(url, []);
 }
 
-export function getCountryDetailsByAlpha(code) {
-  const url =
-    BASE_URL +
-    "/alpha/" +
-    code +
-    "?fields=name,flags,capital,region,subregion,population,languages,currencies";
-  return loadJson(url);
+export function getCountryDetailsById(id) {
+  const url = BASE_URL + "/countries/" + id;
+
+  return loadJson(url, null);
 }
