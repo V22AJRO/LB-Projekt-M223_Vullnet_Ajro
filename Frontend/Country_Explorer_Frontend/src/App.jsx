@@ -21,6 +21,13 @@ export default function App() {
   const [hasSearched, setHasSearched] = useState(false);
 
   // ----------------------------
+  // LOGIN-BUTTON (vorbereitend)
+  // ----------------------------
+  function openLoginPlaceholder() {
+    alert("Login wird im nächsten Schritt eingebaut.");
+  }
+
+  // ----------------------------
   // REGION LADEN
   // ----------------------------
   function loadRegion(region) {
@@ -85,6 +92,14 @@ export default function App() {
   // ----------------------------
   return (
     <div className="seite">
+      <div className="topbar">
+        <div className="topbarTitel">Modul 223 Multiuser App</div>
+
+        <button className="topbarLoginButton" onClick={openLoginPlaceholder}>
+          Login
+        </button>
+      </div>
+
       <h1 className="titel">Country Explorer</h1>
 
       <div className="grid">

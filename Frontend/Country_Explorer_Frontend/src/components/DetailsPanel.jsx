@@ -49,6 +49,8 @@ export default function DetailsPanel({ details }) {
           <div className="detailsZeile">
             <b>Languages:</b> {languages}
           </div>
+
+          <button className="btn">Änderung anfragen</button>
         </div>
       )}
     </div>
