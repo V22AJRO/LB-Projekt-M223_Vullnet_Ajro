@@ -12,18 +12,16 @@ export default function RegionsPanel({
         Europe
       </button>
 
-      <hr />
-
       <h3>Countries</h3>
 
       <div className="liste">
-        {countries.map((c) => (
+        {countries.map((country) => (
           <button
-            key={c.id}
+            key={country.id}
             className="item"
-            onClick={() => onPickCountry(c.id)}
+            onClick={() => onPickCountry(country.id)}
           >
-            {c.name}
+            {country.name}
           </button>
         ))}
       </div>

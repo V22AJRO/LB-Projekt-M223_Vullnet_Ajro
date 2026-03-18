@@ -1,5 +1,5 @@
 .seite {
-  max-width: 1280px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -23,7 +23,12 @@
   color: #213547;
 }
 
-.topbarLoginButton {
+.topbarButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.topbarButton {
   min-width: 120px;
   padding: 10px 16px;
   border-radius: 10px;
@@ -34,21 +39,27 @@
   transition: 0.2s ease;
 }
 
-.topbarLoginButton:hover {
+.topbarButton:hover {
   background: #edf4fa;
 }
 
 .titel {
   text-align: center;
   margin: 0 0 24px 0;
-  font-size: 56px;
+  font-size: 44px;
   font-weight: 800;
   color: #213547;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1.15fr 1fr;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 18px;
+}
+
+.gridAdmin {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 18px;
 }
 
@@ -57,7 +68,6 @@
   border-radius: 16px;
   padding: 18px;
   background: #ffffff;
-  min-height: 470px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
@@ -95,14 +105,6 @@
 
 .input:focus {
   border-color: #9fb7d3;
-}
-
-.sucheZeile {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 12px;
 }
 
 .liste {
@@ -145,8 +147,32 @@
   line-height: 1.4;
 }
 
-@media (max-width: 1000px) {
-  .grid {
+.centerBox {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.requestBoxSpacing {
+  max-width: 520px;
+  margin: 18px auto 0 auto;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.adminItem {
+  border: 1px solid #d8e2ee;
+  border-radius: 12px;
+  padding: 14px;
+  background: #f8fbff;
+}
+
+@media (max-width: 1100px) {
+  .grid,
+  .gridAdmin {
     grid-template-columns: 1fr;
   }
 
@@ -155,15 +181,19 @@
     align-items: stretch;
   }
 
-  .topbarLoginButton {
+  .topbarButtons {
+    flex-direction: column;
+  }
+
+  .topbarButton {
     width: 100%;
   }
 
   .titel {
-    font-size: 40px;
+    font-size: 34px;
   }
 
-  .box {
-    min-height: auto;
+  .buttonRow {
+    flex-direction: column;
   }
 }
