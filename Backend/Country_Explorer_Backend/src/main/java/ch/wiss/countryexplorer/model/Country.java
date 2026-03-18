@@ -10,13 +10,13 @@ import jakarta.validation.constraints.Size;
 
 /**
  * Diese Klasse beschreibt ein Land.
- * 
+ *
  * Ein Country wird in der Datenbank gespeichert
  * und gehört immer genau zu einer Region.
- * 
+ *
  * Zusätzlich kann ein Land mehrere Sprachen haben.
  * Eine Sprache kann aber auch in mehreren Ländern vorkommen.
- * 
+ *
  * Beispiel:
  * Code: "CHE"
  * Name: "Switzerland"
@@ -36,8 +36,8 @@ public class Country {
 
     /**
      * Ländercode mit genau 3 Zeichen.
-     * Beispiel: CHE, DEU, FRA
-     * 
+     * Beispiel: CHE, DEU
+     *
      * Darf nicht leer sein.
      * Muss eindeutig sein.
      */
@@ -49,7 +49,7 @@ public class Country {
     /**
      * Vollständiger Name des Landes.
      * Beispiel: Switzerland, Germany
-     * 
+     *
      * Darf nicht leer sein.
      */
     @NotBlank(message = "name is required")
@@ -58,10 +58,41 @@ public class Country {
     private String name;
 
     /**
+     * Hauptstadt des Landes.
+     *
+     * Diese Information wird im Projekt nur angezeigt
+     * und nicht über Änderungsanträge verändert.
+     */
+    @NotBlank(message = "capital is required")
+    @Size(max = 255, message = "capital must be at most 255 characters")
+    @Column(nullable = false, length = 255)
+    private String capital;
+
+    /**
+     * Einwohnerzahl des Landes.
+     *
+     * Diese Information darf im Projekt
+     * über einen Änderungsantrag angepasst werden.
+     */
+    @NotNull(message = "population is required")
+    @Column(nullable = false)
+    private Long population;
+
+    /**
+     * Präsident des Landes.
+     *
+     * Diese Information darf im Projekt
+     * über einen Änderungsantrag angepasst werden.
+     */
+    @NotBlank(message = "president is required")
+    @Size(max = 255, message = "president must be at most 255 characters")
+    @Column(nullable = false, length = 255)
+    private String president;
+
+    /**
      * Region, zu der dieses Land gehört.
-     * 
+     *
      * Jedes Land muss genau eine Region haben.
-     * Beispiel: Europe, Asia, Americas
      */
     @NotNull(message = "region is required")
     @ManyToOne(optional = false)
@@ -70,13 +101,6 @@ public class Country {
 
     /**
      * Liste der Sprachen, die in diesem Land gesprochen werden.
-     * 
-     * Beispiel:
-     * Schweiz → Deutsch, Französisch, Italienisch
-     * 
-     * Many-to-Many Beziehung:
-     * Ein Land kann mehrere Sprachen haben,
-     * eine Sprache kann in mehreren Ländern vorkommen.
      */
     @ManyToMany
     @JoinTable(
@@ -96,15 +120,22 @@ public class Country {
 
     /**
      * Konstruktor zum Erstellen eines neuen Landes.
-     * 
-     * Erwartet:
-     * - code (z.B. CHE)
-     * - name (z.B. Switzerland)
-     * - region (z.B. Europe)
      */
     public Country(String code, String name, Region region) {
         this.code = code;
         this.name = name;
+        this.region = region;
+    }
+
+    /**
+     * Konstruktor mit allen im Projekt benötigten Stammdaten.
+     */
+    public Country(String code, String name, String capital, Long population, String president, Region region) {
+        this.code = code;
+        this.name = name;
+        this.capital = capital;
+        this.population = population;
+        this.president = president;
         this.region = region;
     }
 
@@ -121,7 +152,6 @@ public class Country {
 
     /**
      * Setzt den Ländercode.
-     * Muss genau 3 Zeichen haben.
      */
     public void setCode(String code) {
         this.code = code;
@@ -142,14 +172,56 @@ public class Country {
     }
 
     /**
-     * Gibt die zugehörige Region zurück.
+     * Gibt die Hauptstadt zurück.
+     */
+    public String getCapital() {
+        return capital;
+    }
+
+    /**
+     * Setzt die Hauptstadt.
+     */
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    /**
+     * Gibt die Einwohnerzahl zurück.
+     */
+    public Long getPopulation() {
+        return population;
+    }
+
+    /**
+     * Setzt die Einwohnerzahl.
+     */
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    /**
+     * Gibt den Präsidenten zurück.
+     */
+    public String getPresident() {
+        return president;
+    }
+
+    /**
+     * Setzt den Präsidenten.
+     */
+    public void setPresident(String president) {
+        this.president = president;
+    }
+
+    /**
+     * Gibt die Region zurück.
      */
     public Region getRegion() {
         return region;
     }
 
     /**
-     * Setzt die Region des Landes.
+     * Setzt die Region.
      */
     public void setRegion(Region region) {
         this.region = region;
@@ -164,8 +236,6 @@ public class Country {
 
     /**
      * Setzt die Sprachen neu.
-     * Falls null übergeben wird,
-     * wird eine leere Liste gesetzt.
      */
     public void setLanguages(Set<Language> languages) {
         this.languages = (languages == null) ? new HashSet<>() : languages;
