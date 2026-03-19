@@ -138,6 +138,9 @@ public class CountryController {
 
         existing.setCode(updatedCountry.getCode());
         existing.setName(updatedCountry.getName());
+        existing.setCapital(updatedCountry.getCapital());
+        existing.setPopulation(updatedCountry.getPopulation());
+        existing.setPresident(updatedCountry.getPresident());
 
         if (updatedCountry.getRegion() != null &&
             updatedCountry.getRegion().getId() != null) {

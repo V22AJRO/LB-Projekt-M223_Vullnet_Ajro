@@ -5,8 +5,8 @@
 }
 
 .topbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 16px;
   margin-bottom: 18px;
@@ -21,6 +21,12 @@
   font-size: 20px;
   font-weight: 700;
   color: #213547;
+}
+
+.topbarUserInfo {
+  text-align: center;
+  color: #213547;
+  font-size: 14px;
 }
 
 .topbarButtons {
@@ -43,12 +49,36 @@
   background: #edf4fa;
 }
 
+.topbarLinkButton {
+  min-width: 120px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #c8d4e3;
+  background: #f7fafc;
+  color: #213547;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.topbarLinkButton:hover {
+  background: #edf4fa;
+}
+
 .titel {
   text-align: center;
   margin: 0 0 24px 0;
   font-size: 44px;
   font-weight: 800;
   color: #213547;
+}
+
+.homeActionBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
 .grid {
@@ -177,15 +207,16 @@
   }
 
   .topbar {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .topbarButtons {
     flex-direction: column;
   }
 
-  .topbarButton {
+  .topbarButton,
+  .topbarLinkButton {
     width: 100%;
   }
 

@@ -39,7 +39,7 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
-    final String[] EVERYONE = { "/public/**", "/api/auth/**" };
+    final String[] EVERYONE = { "/public/**", "/api/auth/**", "/countries/**", "/regions/**" };
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

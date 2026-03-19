@@ -18,13 +18,16 @@ export default function AdminPanel({
                 <b>Land:</b> {request.countryName}
               </div>
               <div className="detailsZeile">
-                <b>Feld:</b> {request.field}
+                <b>Feld:</b> {request.fieldName}
               </div>
               <div className="detailsZeile">
                 <b>Neuer Wert:</b> {request.newValue}
               </div>
               <div className="detailsZeile">
                 <b>Status:</b> {request.status}
+              </div>
+              <div className="detailsZeile">
+                <b>Erstellt von:</b> {request.requestedBy}
               </div>
 
               <div className="buttonRow">
