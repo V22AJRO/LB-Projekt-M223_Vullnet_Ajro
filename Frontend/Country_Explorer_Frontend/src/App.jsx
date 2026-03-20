@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./modules/Layout";
 import Home from "./modules/Home";
 import Login from "./modules/Login";
-import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
@@ -15,11 +14,9 @@ export default function App() {
           <Route
             path="admin"
             element={
-              <PrivateRoute>
-                <AdminRoute>
-                  <Home />
-                </AdminRoute>
-              </PrivateRoute>
+              <AdminRoute>
+                <Home />
+              </AdminRoute>
             }
           />
         </Route>

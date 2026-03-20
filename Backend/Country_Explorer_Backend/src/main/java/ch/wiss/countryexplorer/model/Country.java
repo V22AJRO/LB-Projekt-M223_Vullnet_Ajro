@@ -1,8 +1,5 @@
 package ch.wiss.countryexplorer.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,9 +10,6 @@ import jakarta.validation.constraints.Size;
  *
  * Ein Country wird in der Datenbank gespeichert
  * und gehört immer genau zu einer Region.
- *
- * Zusätzlich kann ein Land mehrere Sprachen haben.
- * Eine Sprache kann aber auch in mehreren Ländern vorkommen.
  *
  * Beispiel:
  * Code: "CHE"
@@ -98,17 +92,6 @@ public class Country {
     @ManyToOne(optional = false)
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
-
-    /**
-     * Liste der Sprachen, die in diesem Land gesprochen werden.
-     */
-    @ManyToMany
-    @JoinTable(
-        name = "country_languages",
-        joinColumns = @JoinColumn(name = "country_id"),
-        inverseJoinColumns = @JoinColumn(name = "language_id")
-    )
-    private Set<Language> languages = new HashSet<>();
 
     /**
      * Leerer Konstruktor.
@@ -225,19 +208,5 @@ public class Country {
      */
     public void setRegion(Region region) {
         this.region = region;
-    }
-
-    /**
-     * Gibt alle Sprachen des Landes zurück.
-     */
-    public Set<Language> getLanguages() {
-        return languages;
-    }
-
-    /**
-     * Setzt die Sprachen neu.
-     */
-    public void setLanguages(Set<Language> languages) {
-        this.languages = (languages == null) ? new HashSet<>() : languages;
     }
 }

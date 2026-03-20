@@ -38,20 +38,20 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      * Gibt alle Länder zurück.
      * 
      * Wichtig:
-     * languages und region werden direkt mitgeladen.
+     * region wird direkt mitgeladen.
      * Dadurch entsteht später kein LazyLoading-Fehler.
      */
     @Override
-    @EntityGraph(attributePaths = {"languages", "region"})
+    @EntityGraph(attributePaths = {"region"})
     List<Country> findAll();
 
     /**
      * Gibt genau ein Land anhand der ID zurück.
      * 
-     * Auch hier werden languages und region direkt mitgeladen.
+     * Auch hier wird region direkt mitgeladen.
      */
     @Override
-    @EntityGraph(attributePaths = {"languages", "region"})
+    @EntityGraph(attributePaths = {"region"})
     Optional<Country> findById(Long id);
 
     /**
@@ -61,7 +61,7 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      * findByRegion_NameIgnoreCase("Europe")
      * → liefert alle Länder in Europa.
      */
-    @EntityGraph(attributePaths = {"languages", "region"})
+    @EntityGraph(attributePaths = {"region"})
     List<Country> findByRegion_NameIgnoreCase(String regionName);
 
     /**
@@ -71,7 +71,7 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      * findByNameContainingIgnoreCase("land")
      * → findet Switzerland, Finland, Iceland usw.
      */
-    @EntityGraph(attributePaths = {"languages", "region"})
+    @EntityGraph(attributePaths = {"region"})
     List<Country> findByNameContainingIgnoreCase(String name);
 
     /**
@@ -82,6 +82,6 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      * Region = Europe
      * Name = land
      */
-    @EntityGraph(attributePaths = {"languages", "region"})
+    @EntityGraph(attributePaths = {"region"})
     List<Country> findByRegion_NameIgnoreCaseAndNameContainingIgnoreCase(String regionName, String name);
 }

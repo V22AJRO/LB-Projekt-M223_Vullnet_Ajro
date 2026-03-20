@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import ch.wiss.countryexplorer.model.User;
 
 /**
- * maps our custom user
+ * Diese Klasse übersetzt das eigene User-Objekt
+ * in ein UserDetails-Objekt von Spring Security.
+ *
+ * Spring Security benötigt genau diese Form,
+ * um einen Benutzer intern für Login und Rollenprüfung zu verwenden.
  */
 public class UserDetailsImpl implements UserDetails {
 
@@ -22,22 +26,34 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long id;
     private String username;
-    private String email;
 
+    /**
+     * @JsonIgnore bedeutet:
+     * Dieses Feld soll nicht als JSON ausgegeben werden.
+     *
+     * Das ist beim Passwort wichtig,
+     * damit es nie versehentlich an das Frontend geschickt wird.
+     */
     @JsonIgnore
     private String password;
 
+    /**
+     * Rollen bzw. Berechtigungen des Benutzers.
+     */
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String username, String password,
             Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
+    /**
+     * Baut aus dem eigenen User-Modell
+     * ein UserDetailsImpl-Objekt für Spring Security.
+     */
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
@@ -47,34 +63,47 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                 (long) user.getId(),
                 user.getUsername(),
-                user.getEmail(),
                 user.getPassword(),
                 authorities);
     }
 
+    /**
+     * Gibt die Rollen des Benutzers zurück.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
+    /**
+     * Gibt die Benutzer-ID zurück.
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Gibt den Benutzernamen zurück.
+     */
     @Override
     public String getUsername() {
         return username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
+    /**
+     * Gibt das Passwort zurück.
+     */
     @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Diese Methoden sind Teil des UserDetails-Interfaces.
+     *
+     * Für dieses Projekt werden Benutzerkonten
+     * immer als aktiv und gültig behandelt.
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -95,6 +124,9 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    /**
+     * Vergleicht zwei Benutzerobjekte anhand ihrer ID.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)

@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AuthService from "../services/auth.service";
 
-/* implements React's Context API for Login fun in entire application. */
+/*
+Dieser Context stellt Login-Daten und Login-Funktionen
+für die ganze React-Anwendung zur Verfügung.
+*/
 const AuthContext = createContext();
 
-/* 
-Custom hook to access the authentication context. 
-Creates a context that will hold authentication state and methods
+/*
+Custom Hook zum einfacheren Zugriff auf den AuthContext.
 */
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -16,16 +18,28 @@ export const useAuth = () => {
   return context;
 };
 
+/*
+Der Provider legt den globalen Login-Zustand fest
+und macht ihn für die ganze Anwendung verfügbar.
+*/
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /*
+  Beim Start der App wird geprüft,
+  ob bereits ein Benutzer im localStorage gespeichert ist.
+  */
   useEffect(() => {
     const currentUser = AuthService.getCurrentUser();
     setUser(currentUser);
     setLoading(false);
   }, []);
 
+  /*
+  Führt den Login aus und übernimmt
+  den Benutzer danach in den globalen Zustand.
+  */
   const login = async (username, password) => {
     setLoading(true);
     try {
@@ -37,20 +51,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, email, password, roles = null) => {
-    setLoading(true);
-    try {
-      return await AuthService.register(username, email, password, roles);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  /*
+  Meldet den Benutzer ab.
+  */
   const logout = () => {
     setUser(null);
     AuthService.logout();
   };
 
+  /*
+  Gibt das aktuell gespeicherte JWT zurück.
+  */
   const getToken = () => {
     const currentUser = AuthService.getCurrentUser();
     return currentUser ? currentUser.token : null;
@@ -59,7 +70,6 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     login,
-    register,
     logout,
     getToken,
     loading,

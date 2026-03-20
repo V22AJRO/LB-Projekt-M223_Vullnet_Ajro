@@ -2,20 +2,30 @@ package ch.wiss.countryexplorer.dto;
 
 import java.util.List;
 
+/**
+ * Diese Klasse beschreibt die Login-Antwort,
+ * die das Backend nach erfolgreicher Anmeldung an das Frontend zurückgibt.
+ *
+ * Enthalten sind:
+ * - das JWT Token
+ * - der Tokentyp
+ * - die Benutzer-ID
+ * - der Username
+ * - die Rollen des Benutzers
+ */
+
 public class JwtResponse {
 
     private String token;
     private String type = "Bearer";
     private Long id;
     private String username;
-    private String email;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String userName, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String userName, List<String> roles) {
         this.token = accessToken;
         this.id = id;
         this.username = userName;
-        this.email = email;
         this.roles = roles;
     }
 
@@ -27,6 +37,11 @@ public class JwtResponse {
         this.token = token;
     }
 
+    /**
+     * Gibt den Typ des Tokens zurück.
+     *
+     * Hier ist das immer "Bearer".
+     */
     public String getType() {
         return type;
     }
@@ -35,6 +50,9 @@ public class JwtResponse {
         this.type = type;
     }
 
+    /**
+     * Gibt die ID des angemeldeten Benutzers zurück.
+     */
     public Long getId() {
         return id;
     }
@@ -43,6 +61,9 @@ public class JwtResponse {
         this.id = id;
     }
 
+    /**
+     * Gibt den Username des angemeldeten Benutzers zurück.
+     */
     public String getUsername() {
         return username;
     }
@@ -51,14 +72,9 @@ public class JwtResponse {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    /**
+     * Gibt die Rollen des Benutzers zurück.
+     */
     public List<String> getRoles() {
         return roles;
     }

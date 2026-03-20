@@ -32,6 +32,21 @@ import ch.wiss.countryexplorer.security.JwtUtils;
 import ch.wiss.countryexplorer.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 
+/**
+ * Dieser Controller ist für die Authentifizierung zuständig.
+ *
+ * Hier werden insbesondere zwei Dinge verarbeitet:
+ * - Login eines bestehenden Benutzers
+ * - Registrierung eines neuen Benutzers
+ *
+ * Die Klasse ist mit @RestController annotiert.
+ * Das bedeutet:
+ * Spring behandelt diese Klasse als REST-Endpunkt
+ * und gibt Rückgabewerte direkt als JSON zurück.
+ *
+ * @RequestMapping("/api/auth") legt den gemeinsamen Basis-Pfad fest.
+ * Alle Methoden in dieser Klasse hängen an diesem Pfad.
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -39,21 +54,50 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    /**
+     * Der AuthenticationManager prüft,
+     * ob Benutzername und Passwort korrekt sind.
+     */
     @Autowired
     AuthenticationManager authenticationManager;
 
+    /**
+     * Repository für Benutzerzugriffe.
+     */
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Repository für Rollen.
+     */
     @Autowired
     RoleRepository roleRepository;
 
+    /**
+     * Encoder zum sicheren Hashen von Passwörtern.
+     */
     @Autowired
     PasswordEncoder encoder;
 
+    /**
+     * Hilfsklasse zum Erstellen und Prüfen von JWT Tokens.
+     */
     @Autowired
     JwtUtils jwtUtils;
 
+    /**
+     * Führt den Login eines Benutzers durch.
+     *
+     * @PostMapping("/login") bedeutet:
+     * Diese Methode reagiert auf HTTP POST Requests
+     * an /api/auth/login.
+     *
+     * @RequestBody liest den JSON-Body der Anfrage ein
+     * und wandelt ihn in ein LoginRequest-Objekt um.
+     *
+     * @Valid aktiviert Validierungsregeln,
+     * falls solche im DTO definiert sind.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
@@ -70,23 +114,26 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        JwtResponse jwtResponse = new JwtResponse(token, user.getId(), user.getUsername(), user.getEmail(), roles);
+        JwtResponse jwtResponse = new JwtResponse(token, user.getId(), user.getUsername(), roles);
 
         return ResponseEntity.ok(jwtResponse);
     }
 
+    /**
+     * Registriert einen neuen Benutzer.
+     *
+     * In diesem Projekt werden nur noch folgende Felder verwendet:
+     * - username
+     * - password
+     * - roles
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().body("Error: Email is already in use!");
-        }
-
         User user = new User(request.getUsername(),
-                request.getEmail(),
                 encoder.encode(request.getPassword()));
 
         Set<String> strRoles = request.getRoles();

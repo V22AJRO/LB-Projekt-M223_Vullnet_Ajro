@@ -12,32 +12,63 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Diese Klasse beschreibt einen Benutzer der Anwendung.
+ *
+ * Ein Benutzer kann sich anmelden und besitzt Rollen.
+ * Über diese Rollen wird später entschieden,
+ * welche Funktionen aufgerufen werden dürfen.
+ *
+ * In diesem Projekt werden nur noch folgende Daten verwendet:
+ * - username
+ * - password
+ * - roles
+ */
 @Entity
 @Table(name = "users")
 public class User {
 
+    /**
+     * Eindeutige ID des Benutzers.
+     * Wird automatisch von der Datenbank erzeugt.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Benutzername für Login und Anzeige.
+     */
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String email;
-
+    /**
+     * Passwort des Benutzers.
+     *
+     * Im Code wird das Passwort gehasht gespeichert
+     * und nicht im Klartext.
+     */
     @NotBlank
     private String password;
 
+    /**
+     * Rollen des Benutzers.
+     *
+     * Ein Benutzer kann mehrere Rollen besitzen,
+     * auch wenn im aktuellen Projekt hauptsächlich
+     * nur ROLE_USER oder ROLE_ADMIN verwendet wird.
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    /**
+     * Konstruktor zum Erstellen eines neuen Benutzers.
+     */
+    public User(String name, String password) {
         this.username = name;
-        this.email = email;
         this.password = password;
     }
 
@@ -45,38 +76,52 @@ public class User {
         return id;
     }
 
+    /**
+     * Setzt die ID.
+     * Normalerweise macht dies automatisch die Datenbank.
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * Gibt den Benutzernamen zurück.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Setzt den Benutzernamen.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    /**
+     * Gibt das Passwort zurück.
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Setzt das Passwort.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Gibt die Rollen des Benutzers zurück.
+     */
     public Set<Role> getRoles() {
         return roles;
     }
 
+    /**
+     * Setzt die Rollen des Benutzers.
+     */
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
